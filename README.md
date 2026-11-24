@@ -28,7 +28,7 @@ The Taskmarket API forbids browser requests from other origins, so the browser n
 calls it. A scheduled build fetches everything server-side and bakes it into `data/*.json`:
 
 - **Fetcher:** `scripts/fetch-data.mjs` (Node, no dependencies, no key)
-- **Schedule:** GitHub Actions, hourly (`.github/workflows/update-data.yml`)
+- **Schedule:** server-side fetch, at least hourly, from the operator's server (`scripts/fetch-data.mjs` + `scripts/gh.py upload`); the workflow files for GitHub Actions-based refresh ship under `docs/workflows/` (see Deploy).
 - **Endpoints** (`https://api.taskmarket.dev`, per chain):
   `/api/market/stats`, `/api/stats/breakdowns`, `/api/stats/platform-time-series`,
   `/api/stats/activity-heatmap`, `/api/stats/activity-feed`, `/api/tasks`
@@ -47,18 +47,18 @@ The task list and headline stats do differ per chain.
 ./deploy.sh
 ```
 
-`deploy.sh` pushes the repo to GitHub (`main`); GitHub Pages is served from the
-`main` branch by the `deploy-pages` workflow (Actions build type), and the hourly
-`update-data` workflow keeps `data/*.json` fresh. That is the whole deploy:
-no server, no secrets, no build step beyond static files.
+`deploy.sh` refreshes `data/*.json` from the live API, regenerates `og.png`,
+and publishes everything to GitHub Pages via the Contents API — no git, no
+server, no secrets beyond the API token. GitHub Pages serves the `main` branch,
+so publishing fresh `data/*.json` re-deploys the site. That is the whole deploy.
 
-> **Setup note:** the two workflow files (`.github/workflows/update-data.yml`,
-> `.github/workflows/deploy-pages.yml`) ship with this project. They are added
-> with a normal push. (During the first deploy the API token used had only
-> `public_repo` scope, which GitHub rejects for workflow files with a 404 — if
-> you hit that, add the two files via the GitHub web UI once and the hourly
-> refresh + Actions Pages deploy take over. Pages itself is served from `main`
-> in the meantime, and pushing fresh `data/*.json` re-deploys it.)
+> **Setup note:** the two workflow files for GitHub Actions-based refresh and
+> deploy (`.github/workflows/update-data.yml`, `.github/workflows/deploy-pages.yml`)
+> ship with this project under `docs/workflows/`. They were not uploaded to
+> `.github/workflows/` because the API token used has only `public_repo` scope,
+> which GitHub rejects for workflow files with a 404. To switch the hourly
+> refresh + Pages deploy to Actions, copy them to `.github/workflows/` (via the
+> GitHub web UI, or with a token that has the `workflow` scope).
 
 To run it locally instead:
 

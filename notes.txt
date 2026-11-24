@@ -16,15 +16,19 @@ Endpoints used (https://api.taskmarket.dev, no key, per chain Tempo 4217 / Base 
   /api/stats/activity-feed
   /api/tasks (paginated, for distinct posters per week + concentration + open tasks)
 
-Refresh method / frequency: GitHub Actions workflow (.github/workflows/update-data.yml)
-runs hourly, fetches the API server-side with scripts/fetch-data.mjs, bakes the
-results into data/*.json, regenerates og.png from the live numbers, and commits.
-The page reads only the static data/*.json files (the API forbids browser requests
-from other origins). A visible "data as of" time (WIB) is shown in the header
-and footer. Data is cached in the static build for up to 1 hour (>= 60s required).
+Refresh method / frequency: scheduled server-side fetch, at least hourly, from
+the operator's server: node scripts/fetch-data.mjs fetches the API and bakes
+the results into data/*.json (and regenerates og.png from the live numbers),
+then the files are published to GitHub Pages via the GitHub Contents API
+(scripts/gh.py). The page reads only the static data/*.json files (the API
+forbids browser requests from other origins). A visible "data as of" time (WIB)
+is shown in the header and footer. Data is cached in the static build for up
+to 1 hour (>= 60s required). The .github/workflows/ files for GitHub
+Actions-based refresh are included in the repo under docs/workflows/ — copy
+them to .github/workflows/ to switch the refresh to Actions (needs a token
+with the workflow scope, or the GitHub web UI).
 
 Deploy command: ./deploy.sh
-(Equivalent: git push origin main — GitHub Pages deploys via the deploy-pages
-workflow. To run locally: node scripts/fetch-data.mjs && python3 -m http.server 8000.)
+(Equivalent: node scripts/fetch-data.mjs && python3 scripts/make_og.py && python3 scripts/gh.py upload lor4irdrop taskmarket-visualizer . — refreshes the data and publishes everything to GitHub Pages. To run locally: node scripts/fetch-data.mjs && python3 -m http.server 8000.)
 
 License: MIT. Public repo.

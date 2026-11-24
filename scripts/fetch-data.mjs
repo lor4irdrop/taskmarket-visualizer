@@ -1,5 +1,5 @@
 // Fetch Taskmarket public API data server-side and bake it into data/*.json.
-// Runs in GitHub Actions hourly and locally with:  node scripts/fetch-data.mjs
+// Runs on a schedule (at least hourly) from the operator's server, and locally with:  node scripts/fetch-data.mjs
 // No key needed. Every number in the dashboard comes from these files.
 import { writeFileSync, mkdirSync } from "node:fs";
 
@@ -153,7 +153,7 @@ const meta = {
   fetchedAt: now.toISOString(),
   fetchedAtWIB: new Date(now.getTime() + 7 * 3600 * 1000).toISOString().replace("T", " ").slice(0, 19) + " WIB",
   baseUrl: BASE, chains: CHAINS, endpoints,
-  refresh: "GitHub Actions, hourly; data baked into the static site at build time.",
+  refresh: "Scheduled server-side fetch, at least hourly; data baked into the static site.",
   note: "All numbers are copied verbatim from api.taskmarket.dev. Amounts are in micro-units (1,000,000 = 1 OUSD/USDC).",
 };
 writeFileSync(`${OUT}meta.json`, JSON.stringify(meta, null, 2));

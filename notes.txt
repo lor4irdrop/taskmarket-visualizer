@@ -1,0 +1,30 @@
+Taskmarket live market visualizer — notes.txt
+Bounty: TSK-BRK611AN "Build and host Taskmarket's live market visualizer (50 OUSD)"
+
+Live URL: https://lor4irdrop.github.io/taskmarket-visualizer/
+Repo URL: https://github.com/lor4irdrop/taskmarket-visualizer
+
+Stack: static HTML + CSS + vanilla JavaScript (no framework, no external JS
+libraries, no analytics, no wallet). Fonts: Instrument Serif + Inter Tight
+(Google Fonts, per the Taskmarket brand kit). Hosted on GitHub Pages.
+
+Endpoints used (https://api.taskmarket.dev, no key, per chain Tempo 4217 / Base 8453):
+  /api/market/stats
+  /api/stats/breakdowns
+  /api/stats/platform-time-series (ranges 7d/30d/90d/all)
+  /api/stats/activity-heatmap (dimensions hourOfWeek, mode)
+  /api/stats/activity-feed
+  /api/tasks (paginated, for distinct posters per week + concentration + open tasks)
+
+Refresh method / frequency: GitHub Actions workflow (.github/workflows/update-data.yml)
+runs hourly, fetches the API server-side with scripts/fetch-data.mjs, bakes the
+results into data/*.json, regenerates og.png from the live numbers, and commits.
+The page reads only the static data/*.json files (the API forbids browser requests
+from other origins). A visible "data as of" time (WIB) is shown in the header
+and footer. Data is cached in the static build for up to 1 hour (>= 60s required).
+
+Deploy command: ./deploy.sh
+(Equivalent: git push origin main — GitHub Pages deploys via the deploy-pages
+workflow. To run locally: node scripts/fetch-data.mjs && python3 -m http.server 8000.)
+
+License: MIT. Public repo.

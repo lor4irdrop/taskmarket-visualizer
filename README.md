@@ -52,6 +52,14 @@ The task list and headline stats do differ per chain.
 `update-data` workflow keeps `data/*.json` fresh. That is the whole deploy:
 no server, no secrets, no build step beyond static files.
 
+> **Setup note:** the two workflow files (`.github/workflows/update-data.yml`,
+> `.github/workflows/deploy-pages.yml`) ship with this project. They are added
+> with a normal push. (During the first deploy the API token used had only
+> `public_repo` scope, which GitHub rejects for workflow files with a 404 — if
+> you hit that, add the two files via the GitHub web UI once and the hourly
+> refresh + Actions Pages deploy take over. Pages itself is served from `main`
+> in the meantime, and pushing fresh `data/*.json` re-deploys it.)
+
 To run it locally instead:
 
 ```sh

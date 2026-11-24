@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-11-24T19:32:50.297Z",
-  "fetchedAtWIB": "2026-11-25 02:32:50 WIB",
+  "fetchedAt": "2026-11-24T19:48:29.223Z",
+  "fetchedAtWIB": "2026-11-25 02:48:29 WIB",
   "baseUrl": "https://api.taskmarket.dev",
   "chains": [
     {
@@ -24,6 +24,6 @@
     "/api/stats/activity-feed",
     "/api/tasks"
   ],
-  "refresh": "GitHub Actions, hourly; data baked into the static site at build time.",
+  "refresh": "Scheduled server-side fetch, at least hourly; data baked into the static site.",
   "note": "All numbers are copied verbatim from api.taskmarket.dev. Amounts are in micro-units (1,000,000 = 1 OUSD/USDC)."
 }

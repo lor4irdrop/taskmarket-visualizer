@@ -1,0 +1,29 @@
+{
+  "fetchedAt": "2026-11-24T19:32:50.297Z",
+  "fetchedAtWIB": "2026-11-25 02:32:50 WIB",
+  "baseUrl": "https://api.taskmarket.dev",
+  "chains": [
+    {
+      "id": 4217,
+      "slug": "tempo",
+      "name": "Tempo",
+      "currency": "OUSD"
+    },
+    {
+      "id": 8453,
+      "slug": "base",
+      "name": "Base",
+      "currency": "USDC"
+    }
+  ],
+  "endpoints": [
+    "/api/market/stats",
+    "/api/stats/breakdowns",
+    "/api/stats/platform-time-series",
+    "/api/stats/activity-heatmap",
+    "/api/stats/activity-feed",
+    "/api/tasks"
+  ],
+  "refresh": "GitHub Actions, hourly; data baked into the static site at build time.",
+  "note": "All numbers are copied verbatim from api.taskmarket.dev. Amounts are in micro-units (1,000,000 = 1 OUSD/USDC)."
+}

@@ -90,7 +90,7 @@ function renderHeadline(d) {
     `<div class="card"><h3>${h}</h3><div class="big">${v}</div><div class="sub">${sub}</div></div>`).join("");
   $("#headline").insertAdjacentHTML("afterend", "");
   // 30-day strip under the cards
-  $("#asof").textContent = `Data as of ${META.fetchedAtWIB} · refreshed hourly`;
+  $("#asof").textContent = `Data as of ${META.fetchedAtWIB} · refreshed at least hourly`;
   $("#asof-chain").textContent = `chain: ${d.chain.name} (${d.chain.id}) · ${d.chain.currency}`;
   const strip = document.createElement("div");
   strip.className = "panel";
@@ -304,13 +304,13 @@ function renderInsights(d) {
 
 function renderMethods() {
   $("#methods-body").innerHTML = `
-    <p>Data comes from the public Taskmarket API at <code>https://api.taskmarket.dev</code> — no key, no login. A scheduled build (GitHub Actions, hourly) fetches the endpoints below and bakes the results into <code>data/*.json</code>; this page reads only those static files, so it loads fast and never calls the API from your browser.</p>
+    <p>Data comes from the public Taskmarket API at <code>https://api.taskmarket.dev</code> — no key, no login. A scheduled server-side fetch (at least hourly) fetches the endpoints below and bakes the results into <code>data/*.json</code>; this page reads only those static files, so it loads fast and never calls the API from your browser.</p>
     <p style="margin-top:10px">Endpoints used, for Tempo (<code>chainId=4217</code>) and Base (<code>chainId=8453</code>):</p>
     <p style="margin-top:6px">${META.endpoints.map((e) => `<code>${e}</code>`).join(" · ")}</p>
     <p style="margin-top:10px">Derived numbers: distinct posters per week are counted from the paginated <code>/api/tasks</code> list (newest first). That list currently ends after about 826 tasks (oldest late October 2026) — the API stops returning older pages — so poster and concentration figures cover the returned window, while totals from the time-series endpoint cover the full history. Poster concentration, died-task share and the money-flow gap are computed from those same lists and the breakdowns. Amounts are in micro-units — <code>1,000,000 = 1 OUSD / 1 USDC</code>. Times are UTC unless marked WIB.</p>
     <p style="margin-top:10px">Caveats, stated plainly: the API currently returns identical breakdowns, time series and heatmaps for both chains — they are shown exactly as returned, per chain. The task list does differ per chain. If the API changes, this page changes with the next hourly build, and the “data as of” time always tells you which snapshot you are looking at.</p>
     <p style="margin-top:10px">Reproduce any number: fetch the endpoint above with the same <code>chainId</code> and compare it with the snapshot time in the header. Source code: <a href="https://github.com/lor4irdrop/taskmarket-visualizer">github.com/lor4irdrop/taskmarket-visualizer</a> (MIT).</p>`;
-  $("#foot-meta").textContent = `data as of ${META.fetchedAtWIB} · refresh: hourly · stack: static HTML + GitHub Actions`;
+  $("#foot-meta").textContent = `data as of ${META.fetchedAtWIB} · refresh: scheduled, at least hourly · stack: static HTML`;
 }
 
 function renderAll() {
